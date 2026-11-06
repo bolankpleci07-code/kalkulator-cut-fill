@@ -3,42 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cut and Fill Calculator v5.0</title>
+    <title>CUT & FILL ULTIMATE v6.0 | Enterprise Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Cut and Fill Calculator v5.0</h1>
+    <div class="dashboard-wrapper">
+        <!-- HEADER -->
+        <header class="main-header">
+            <div>
+                <h1>CUT & FILL ULTIMATE <span class="badge">v6.0 PRO</span></h1>
+                <p>Sistem Komputasi Multi-Grid & Logistik Haulage Standar Kontraktor</p>
+            </div>
+            <button class="btn-reset" onclick="resetKalkulator()">Reset Panel</button>
+        </header>
 
-    <div class="form-group">
-        <h3>Data Proyek</h3>
-        <input id="namaProyek" placeholder="Nama proyek">
+        <!-- MAIN LAYOUT -->
+        <div class="main-layout">
+            <!-- LEFT COLUMN: INPUT -->
+            <div class="column-left">
+                <!-- Data Proyek & Logistik -->
+                <div class="card">
+                    <h2>1. Parameter Proyek & Faktor Tanah</h2>
+                    <div class="input-box">
+                        <label>Nama Proyek / Lokasi Lahan</label>
+                        <input id="namaProyek" type="text" placeholder="Contoh: Bendungan & Kavling Blok A">
+                    </div>
+                    <div class="grid-2-col">
+                        <div class="input-box">
+                            <label>Ukuran Sel Grid (m)</label>
+                            <input id="gridSize" type="number" value="5" placeholder="Misal: 5 atau 10">
+                        </div>
+                        <div class="input-box">
+                            <label>Swell Factor / Faktor Muai (%)</label>
+                            <input id="swellFactor" type="number" value="20" placeholder="Contoh: 20">
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <label>Elevasi Rencana / Target Desain (m)</label>
+                        <input id="elevasiRencana" type="number" value="0.0" placeholder="0.0">
+                    </div>
+                </div>
+
+                <!-- Input Titik Grid Dinamis -->
+                <div class="card">
+                    <h2>2. Input Data Elevasi Titik Grid (4 Sudut Sel)</h2>
+                    <p class="subtitle">Masukkan elevasi existing untuk setiap sudut kotak sel grid lapangan.</p>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sel</th>
+                                    <th>Sudut 1 (m)</th>
+                                    <th>Sudut 2 (m)</th>
+                                    <th>Sudut 3 (m)</th>
+                                    <th>Sudut 4 (m)</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gridTableBody">
+                                <!-- Data Baris Ditambahkan Lewat JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn-add" onclick="tambahBarisGrid()">+ Tambah Kotak Sel Grid</button>
+                    <button class="btn-calculate" onclick="hitungCutFillUltimate()">Proses Data & Hitung Volume</button>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: OUTPUT KPI & RINGKASAN -->
+            <div class="column-right">
+                <div class="card summary-panel">
+                    <h2>3. Ringkasan Hasil Perhitungan (KPI Dashboard)</h2>
+                    
+                    <div class="kpi-grid">
+                        <div class="kpi-box">
+                            <span class="kpi-title">TOTAL LUAS WILAYAH</span>
+                            <span class="kpi-value" id="totalLuas">0.0 m²</span>
+                        </div>
+                        <div class="kpi-box kpi-cut">
+                            <span class="kpi-title">VOL GALIAN ASLI (BANK CUT)</span>
+                            <span class="kpi-value" id="volCut">0.0 m³</span>
+                        </div>
+                        <div class="kpi-box kpi-fill">
+                            <span class="kpi-title">VOL TIMBUNAN (COMPACT FILL)</span>
+                            <span class="kpi-value" id="volFill">0.0 m³</span>
+                        </div>
+                        <div class="kpi-box kpi-loose">
+                            <span class="kpi-title">VOL LONGGAR KENDARAAN (LOOSE CUT)</span>
+                            <span class="kpi-value" id="volLoose">0.0 m³</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-details">
+                        <div class="detail-row">
+                            <span>Selisih Bersih (Netto Volume):</span>
+                            <span id="nettoVolume" style="font-weight: 700;">0.0 m³</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Rekomendasi Operasional:</span>
+                            <span id="statusProyek" style="font-weight: 700; color: #10b981;">Menunggu Data...</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-print" onclick="window.print()">Ekspor Laporan PDF Resmi</button>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <h3>Ukuran Lahan / Grid</h3>
-        <label for="panjang">Panjang Lahan (m):</label>
-        <input id="panjang" type="number" placeholder="Contoh: 50" step="any">
-
-        <label for="lebar">Lebar Lahan (m):</label>
-        <input id="lebar" type="number" placeholder="Contoh: 30" step="any">
-    </div>
-
-    <div class="form-group">
-        <h3>Elevasi Tanah</h3>
-        <label for="existing">Elevasi Tanah Asli / Existing (m):</label>
-        <input id="existing" type="number" placeholder="Contoh: 2.5 atau -1.5" step="any">
-    </div>
-
-    <br>
-    <button onclick="hitungCutFill()">Hitung Volume</button>
-
-    <h3>Hasil Perhitungan</h3>
-    <div id="hasil">
-        <p>Volume Galian (Cut): <span id="volCut">0</span> m³</p>
-        <p>Volume Timbunan (Fill): <span id="volFill">0</span> m³</p>
-        <p>Status Proyek: <span id="statusProyek">-</span></p>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>
