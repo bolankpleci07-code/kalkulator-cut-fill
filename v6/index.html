@@ -1,100 +1,154 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123c30">
+  <title>CUT &amp; FILL V6.0</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>⛰ CUT &amp; FILL <span class="version">VERSION 6.0</span></h1>
+    <p>Earthwork Calculator · Grid · Cross Section · Surface 3D</p>
+  </header>
 
-body {
-    background-color: #121214;
-    color: #e4e4e7;
-    padding: 30px 20px;
-}
+  <main>
+    <nav class="tabs" aria-label="Menu utama">
+      <button class="tab active" data-tab="project">Proyek</button>
+      <button class="tab" data-tab="grid">Metode Grid</button>
+      <button class="tab" data-tab="section">Cross Section</button>
+      <button class="tab" data-tab="surface">Surface 3D</button>
+      <button class="tab" data-tab="report">Laporan</button>
+    </nav>
 
-.dashboard-wrapper {
-    max-width: 1280px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
+    <section id="project" class="panel active">
+      <div class="card">
+        <h2>Informasi proyek</h2>
+        <div class="grid">
+          <div><label for="projectName">Nama proyek</label><input id="projectName" value="Pekerjaan Tanah"></div>
+          <div><label for="location">Lokasi</label><input id="location" placeholder="Lokasi proyek"></div>
+          <div><label for="unit">Satuan panjang</label><select id="unit"><option value="m">Meter (m)</option><option value="ft">Feet (ft)</option></select></div>
+          <div><label for="design">Elevasi rencana default (m)</label><input id="design" type="number" step="0.001" value="100"></div>
+        </div>
+        <p class="note">Elevasi rencana default dipakai saat mengisi grid atau penampang. Nilai desain per titik dapat diubah secara individual.</p>
+      </div>
+      <div class="card">
+        <h2>Petunjuk kerja</h2>
+        <ol>
+          <li>Isi informasi proyek dan elevasi rencana.</li>
+          <li>Masukkan data titik grid atau data penampang.</li>
+          <li>Jalankan perhitungan untuk memperoleh volume cut dan fill.</li>
+          <li>Lihat model permukaan 3D dan unduh laporan CSV.</li>
+        </ol>
+        <p class="note">Aplikasi berjalan lokal di browser. Gunakan ekspor CSV untuk menyimpan arsip pekerjaan.</p>
+      </div>
+    </section>
 
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #27272a;
-    padding-bottom: 16px;
-}
+    <section id="grid" class="panel">
+      <div class="card">
+        <h2>Input titik grid</h2>
+        <div class="grid">
+          <div><label for="spacingX">Jarak grid X (m)</label><input id="spacingX" type="number" min="0.001" step="0.1" value="10"></div>
+          <div><label for="spacingY">Jarak grid Y (m)</label><input id="spacingY" type="number" min="0.001" step="0.1" value="10"></div>
+          <div><label for="cols">Jumlah kolom</label><input id="cols" type="number" min="2" max="40" value="3"></div>
+          <div><label for="rows">Jumlah baris</label><input id="rows" type="number" min="2" max="40" value="3"></div>
+        </div>
+        <p class="note">Masukkan elevasi tanah asli (EG) dan elevasi rencana (FG) pada setiap simpul. Selisih positif EG−FG = cut; selisih negatif = fill.</p>
+        <div class="actions">
+          <button class="primary" id="makeGrid">Buat tabel grid</button>
+          <button id="sampleGrid">Muat contoh</button>
+          <button id="calcGrid">Hitung volume grid</button>
+        </div>
+        <div class="table-wrap">
+          <table id="gridTable">
+            <thead><tr><th>Titik</th><th>X</th><th>Y</th><th>EG</th><th>FG</th><th>Δ (EG−FG)</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="stats">
+          <div class="stat"><small>Cut Grid</small><strong id="gridCut">0.000</strong><small>m³</small></div>
+          <div class="stat"><small>Fill Grid</small><strong id="gridFill">0.000</strong><small>m³</small></div>
+          <div class="stat"><small>Net (Cut−Fill)</small><strong id="gridNet">0.000</strong><small>m³</small></div>
+          <div class="stat"><small>Luas grid</small><strong id="gridArea">0.000</strong><small>m²</small></div>
+        </div>
+        <p class="note">Metode grid: volume tiap sel dihitung dari rata-rata empat sudut. Ini pendekatan; sel yang memotong bidang nol belum dipecah menjadi prisma cut dan fill terpisah.</p>
+      </div>
+    </section>
 
-h1 { font-size: 24px; color: #ffffff; font-weight: 700; }
-.badge { background-color: #ff9800; font-size: 11px; padding: 2px 8px; border-radius: 12px; vertical-align: middle; color: #000; font-weight: 700; }
-.main-header p { font-size: 13px; color: #a1a1aa; margin-top: 4px; }
+    <section id="section" class="panel">
+      <div class="card">
+        <h2>Cross Section / Average End Area</h2>
+        <div class="grid">
+          <div><label for="sta">Station / STA</label><input id="sta" type="number" step="0.001" value="0"></div>
+          <div><label for="sectionSpacing">Jarak antar section (m)</label><input id="sectionSpacing" type="number" min="0.001" step="0.1" value="10"></div>
+          <div><label for="leftWidth">Lebar kiri (m)</label><input id="leftWidth" type="number" min="0" step="0.1" value="5"></div>
+          <div><label for="rightWidth">Lebar kanan (m)</label><input id="rightWidth" type="number" min="0" step="0.1" value="5"></div>
+        </div>
+        <p class="note">Masukkan luas cut dan fill penampang (m²) untuk setiap station. Lebar kiri/kanan disediakan sebagai data referensi.</p>
+        <div class="grid">
+          <div><label for="areaCut">Area cut (m²)</label><input id="areaCut" type="number" min="0" step="0.001" value="0"></div>
+          <div><label for="areaFill">Area fill (m²)</label><input id="areaFill" type="number" min="0" step="0.001" value="0"></div>
+          <div class="action-cell"><button class="primary" id="addSection">Tambah section</button></div>
+          <div class="action-cell"><button id="sampleSections">Muat contoh</button></div>
+        </div>
+        <div class="table-wrap">
+          <table id="sectionTable">
+            <thead><tr><th>STA</th><th>Area Cut (m²)</th><th>Area Fill (m²)</th><th>Jarak berikutnya</th><th>Aksi</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="stats">
+          <div class="stat"><small>Cut Section</small><strong id="secCut">0.000</strong><small>m³</small></div>
+          <div class="stat"><small>Fill Section</small><strong id="secFill">0.000</strong><small>m³</small></div>
+          <div class="stat"><small>Net</small><strong id="secNet">0.000</strong><small>m³</small></div>
+          <div class="stat"><small>Jumlah section</small><strong id="secCount">0</strong></div>
+        </div>
+        <p class="note">Rumus Average End Area: V = (A₁ + A₂) / 2 × L. Volume dihitung di antara dua station berurutan.</p>
+      </div>
+    </section>
 
-.main-layout {
-    display: grid;
-    grid-template-columns: 1.3fr 0.7fr;
-    gap: 24px;
-}
+    <section id="surface" class="panel">
+      <div class="card">
+        <h2>Visualisasi Surface 3D (skematik)</h2>
+        <p class="note">Permukaan dibuat dari titik grid sebagai visualisasi perspektif sederhana. Ini bukan model TIN/DTM survei atau pengganti perangkat lunak pemodelan terrain.</p>
+        <div class="inline">
+          <div><label for="surfaceMode">Permukaan</label><select id="surfaceMode"><option value="eg">Existing Ground (EG)</option><option value="fg">Finish Grade (FG)</option><option value="diff">Selisih EG − FG</option></select></div>
+          <div><label for="surfaceView">Sudut pandang</label><select id="surfaceView"><option value="iso">Isometrik</option><option value="top">Tampak atas</option></select></div>
+          <div><button class="primary" id="drawSurface">Gambar Surface</button></div>
+        </div>
+        <canvas id="surfaceCanvas" width="1000" height="520" aria-label="Visualisasi permukaan grid"></canvas>
+        <div class="note" id="surfaceInfo">Buat atau muat grid terlebih dahulu.</div>
+      </div>
+    </section>
 
-@media (max-width: 1024px) {
-    .main-layout { grid-template-columns: 1fr; }
-}
-
-.card {
-    background-color: #18181b;
-    border: 1px solid #27272a;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-h2 { font-size: 15px; color: #ffffff; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
-.subtitle { font-size: 12px; color: #a1a1aa; margin-bottom: 14px; margin-top: -10px; }
-
-.input-box { margin-bottom: 14px; }
-.grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-label { display: block; font-size: 11px; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase; font-weight: 600; }
-input {
-    width: 100%; background-color: #242427; border: 1px solid #3f3f46; border-radius: 6px;
-    padding: 10px 14px; font-size: 14px; color: #ffffff; transition: border-color 0.2s;
-}
-input:focus { outline: none; border-color: #22c55e; }
-
-/* Table Styling */
-.table-container { overflow-x: auto; margin-bottom: 14px; background-color: #202023; border-radius: 6px; border: 1px solid #27272a; }
-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-th, td { padding: 12px; border-bottom: 1px solid #27272a; }
-th { background-color: #27272a; color: #ffffff; font-weight: 600; }
-td input { padding: 6px 10px; font-size: 13px; }
-
-/* Buttons */
-button { border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.btn-reset { background-color: #27272a; color: #e4e4e7; padding: 8px 16px; font-size: 13px; }
-.btn-reset:hover { background-color: #3f3f46; }
-.btn-add { background-color: #3f3f46; color: #ffffff; padding: 10px 16px; font-size: 13px; width: 100%; margin-bottom: 10px; }
-.btn-add:hover { background-color: #52525b; }
-.btn-calculate { background-color: #22c55e; color: #ffffff; padding: 14px; font-size: 14px; width: 100%; }
-.btn-calculate:hover { background-color: #16a34a; }
-.btn-print { background-color: #0066cc; color: white; padding: 14px; font-size: 14px; width: 100%; margin-top: 15px; }
-.btn-print:hover { background-color: #0052a3; }
-.btn-delete { background-color: #ef4444; color: white; padding: 6px 12px; font-size: 12px; }
-.btn-delete:hover { background-color: #dc2626; }
-
-/* KPI Cards Layout */
-.kpi-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
-.kpi-box { background-color: #202023; border: 1px solid #27272a; border-radius: 8px; padding: 16px; }
-.kpi-title { font-size: 10px; color: #a1a1aa; font-weight: 700; letter-spacing: 0.5px; }
-.kpi-value { display: block; font-size: 20px; font-weight: 700; color: #ffffff; margin-top: 4px; }
-.kpi-cut .kpi-title { color: #f87171; }
-.kpi-cut .kpi-value { color: #ef4444; }
-.kpi-fill .kpi-title { color: #818cf8; }
-.kpi-fill .kpi-value { color: #6366f1; }
-.kpi-loose .kpi-title { color: #fbbf24; }
-.kpi-loose .kpi-value { color: #f59e0b; }
-
-.summary-details { margin-top: 20px; padding: 14px; background-color: #202023; border-radius: 8px; font-size: 13px; display: flex; flex-direction: column; gap: 10px; }
-.detail-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #27272a; padding-bottom: 6px; }
-.detail-row:last-child { border: none; padding: 0; }
+    <section id="report" class="panel">
+      <div class="card">
+        <h2>Rekapitulasi volume</h2>
+        <div class="stats">
+          <div class="stat"><small>Total Cut</small><strong id="totalCut">0.000</strong><small>m³</small></div>
+          <div class="stat"><small>Total Fill</small><strong id="totalFill">0.000</strong><small>m³</small></div>
+          <div class="stat"><small>Net Earthwork</small><strong id="totalNet">0.000</strong><small>m³</small></div>
+          <div class="stat"><small>Metode aktif</small><strong id="methodLabel" class="method-label">Belum dihitung</strong></div>
+        </div>
+        <p id="reportMeta" class="note"></p>
+        <div class="actions">
+          <button class="primary" id="exportCsv">Ekspor laporan CSV</button>
+          <button id="printReport">Cetak / Simpan PDF</button>
+          <button class="danger" id="resetAll">Reset seluruh data</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Catatan teknis &amp; batasan</h2>
+        <ul>
+          <li>Grid menggunakan metode rata-rata empat sudut per sel.</li>
+          <li>Cross Section memakai Average End Area dan memerlukan luas penampang yang sudah dihitung.</li>
+          <li>Cut dan fill dihitung terpisah; faktor swell/shrinkage, stripping, topsoil, dan pemadatan belum diterapkan.</li>
+          <li>Validasi koordinat, datum, interval grid, batas area, breakline, dan metode ukur oleh surveyor/engineer sebelum dipakai untuk dokumen kontrak.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <script src="script.js" defer></script>
+</body>
+</html>
