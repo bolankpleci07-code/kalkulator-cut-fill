@@ -1,1 +1,100 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
+body {
+    background-color: #121214;
+    color: #e4e4e7;
+    padding: 30px 20px;
+}
+
+.dashboard-wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #27272a;
+    padding-bottom: 16px;
+}
+
+h1 { font-size: 24px; color: #ffffff; font-weight: 700; }
+.badge { background-color: #ff9800; font-size: 11px; padding: 2px 8px; border-radius: 12px; vertical-align: middle; color: #000; font-weight: 700; }
+.main-header p { font-size: 13px; color: #a1a1aa; margin-top: 4px; }
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 24px;
+}
+
+@media (max-width: 1024px) {
+    .main-layout { grid-template-columns: 1fr; }
+}
+
+.card {
+    background-color: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+h2 { font-size: 15px; color: #ffffff; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
+.subtitle { font-size: 12px; color: #a1a1aa; margin-bottom: 14px; margin-top: -10px; }
+
+.input-box { margin-bottom: 14px; }
+.grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+label { display: block; font-size: 11px; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase; font-weight: 600; }
+input {
+    width: 100%; background-color: #242427; border: 1px solid #3f3f46; border-radius: 6px;
+    padding: 10px 14px; font-size: 14px; color: #ffffff; transition: border-color 0.2s;
+}
+input:focus { outline: none; border-color: #22c55e; }
+
+/* Table Styling */
+.table-container { overflow-x: auto; margin-bottom: 14px; background-color: #202023; border-radius: 6px; border: 1px solid #27272a; }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+th, td { padding: 12px; border-bottom: 1px solid #27272a; }
+th { background-color: #27272a; color: #ffffff; font-weight: 600; }
+td input { padding: 6px 10px; font-size: 13px; }
+
+/* Buttons */
+button { border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.btn-reset { background-color: #27272a; color: #e4e4e7; padding: 8px 16px; font-size: 13px; }
+.btn-reset:hover { background-color: #3f3f46; }
+.btn-add { background-color: #3f3f46; color: #ffffff; padding: 10px 16px; font-size: 13px; width: 100%; margin-bottom: 10px; }
+.btn-add:hover { background-color: #52525b; }
+.btn-calculate { background-color: #22c55e; color: #ffffff; padding: 14px; font-size: 14px; width: 100%; }
+.btn-calculate:hover { background-color: #16a34a; }
+.btn-print { background-color: #0066cc; color: white; padding: 14px; font-size: 14px; width: 100%; margin-top: 15px; }
+.btn-print:hover { background-color: #0052a3; }
+.btn-delete { background-color: #ef4444; color: white; padding: 6px 12px; font-size: 12px; }
+.btn-delete:hover { background-color: #dc2626; }
+
+/* KPI Cards Layout */
+.kpi-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.kpi-box { background-color: #202023; border: 1px solid #27272a; border-radius: 8px; padding: 16px; }
+.kpi-title { font-size: 10px; color: #a1a1aa; font-weight: 700; letter-spacing: 0.5px; }
+.kpi-value { display: block; font-size: 20px; font-weight: 700; color: #ffffff; margin-top: 4px; }
+.kpi-cut .kpi-title { color: #f87171; }
+.kpi-cut .kpi-value { color: #ef4444; }
+.kpi-fill .kpi-title { color: #818cf8; }
+.kpi-fill .kpi-value { color: #6366f1; }
+.kpi-loose .kpi-title { color: #fbbf24; }
+.kpi-loose .kpi-value { color: #f59e0b; }
+
+.summary-details { margin-top: 20px; padding: 14px; background-color: #202023; border-radius: 8px; font-size: 13px; display: flex; flex-direction: column; gap: 10px; }
+.detail-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #27272a; padding-bottom: 6px; }
+.detail-row:last-child { border: none; padding: 0; }
