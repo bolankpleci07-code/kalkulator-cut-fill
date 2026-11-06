@@ -1,1 +1,330 @@
+:root {
+  --bg: #f3f6f5;
+  --card: #fff;
+  --ink: #172b27;
+  --muted: #65756f;
+  --green: #176b50;
+  --line: #dce6e1;
+  --red: #b84c43;
+  --blue: #356d9b;
+}
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.45 system-ui, Segoe UI, Arial;
+}
+
+header {
+  background: #123c30;
+  color: #fff;
+  padding: 22px max(18px, calc((100% - 1180px) / 2));
+}
+
+header h1 {
+  margin: 0;
+  font-size: 25px;
+  letter-spacing: .4px;
+}
+
+header p {
+  margin: 5px 0 0;
+  color: #d1e6dc;
+}
+
+.version {
+  font-size: 13px;
+  background: #2b7057;
+  padding: 4px 8px;
+  border-radius: 20px;
+  vertical-align: middle;
+}
+
+main {
+  max-width: 1180px;
+  margin: 20px auto;
+  padding: 0 16px 50px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+button,
+.tab {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: #e2ebe6;
+  color: #174434;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+button.primary,
+.tab.active {
+  background: var(--green);
+  color: white;
+}
+
+button.danger {
+  background: #fae8e6;
+  color: #9b3029;
+}
+
+button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.panel {
+  display: none;
+}
+
+.panel.active {
+  display: block;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px #123c3008;
+}
+
+h2 {
+  font-size: 18px;
+  margin: 0 0 12px;
+}
+
+h3 {
+  font-size: 15px;
+  margin: 0 0 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+label {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+  margin-bottom: 4px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #cbd9d2;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+
+textarea {
+  min-height: 85px;
+  font-family: ui-monospace, monospace;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.stat {
+  background: #f1f7f3;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.stat small {
+  color: var(--muted);
+  display: block;
+}
+
+.stat strong {
+  font-size: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--line);
+  padding: 8px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+th:first-child,
+td:first-child {
+  text-align: left;
+}
+
+th {
+  background: #f5f8f6;
+  color: #52645c;
+}
+
+.table-wrap {
+  margin-top: 12px;
+  overflow: auto;
+  max-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+
+.note {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.good {
+  color: var(--green);
+}
+
+.warn {
+  color: #a35a13;
+}
+
+canvas {
+  width: 100%;
+  height: 360px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fbfdfc;
+}
+
+.hidden {
+  display: none;
+}
+
+.inline {
+  display: flex;
+  gap: 8px;
+  align-items: end;
+  margin-bottom: 10px;
+}
+
+.inline > div {
+  flex: 1;
+}
+
+.action-cell {
+  display: flex;
+  align-items: end;
+}
+
+.action-cell button {
+  width: 100%;
+}
+
+.method-label {
+  font-size: 15px !important;
+}
+
+#gridTable input {
+  min-width: 86px;
+  padding: 7px;
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  header h1 {
+    font-size: 21px;
+  }
+
+  .inline {
+    display: block;
+  }
+
+  .inline > div {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  button {
+    padding: 9px 11px;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  header {
+    padding: 12px 0;
+    background: #fff;
+    color: #000;
+  }
+
+  header p {
+    color: #333;
+  }
+
+  .tabs,
+  .actions button {
+    display: none !important;
+  }
+
+  main {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .panel {
+    display: none !important;
+  }
+
+  #report {
+    display: block !important;
+  }
+
+  .card {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+}
