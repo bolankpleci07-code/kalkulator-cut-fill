@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cut and Fill Calculator v5.0</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Cut and Fill Calculator v5.0</h1>
+
+    <div class="form-group">
+        <h3>Data Proyek</h3>
+        <input id="namaProyek" placeholder="Nama proyek">
+    </div>
+
+    <div class="form-group">
+        <h3>Ukuran Lahan / Grid</h3>
+        <label for="panjang">Panjang Lahan (m):</label>
+        <input id="panjang" type="number" placeholder="Contoh: 50" step="any">
+
+        <label for="lebar">Lebar Lahan (m):</label>
+        <input id="lebar" type="number" placeholder="Contoh: 30" step="any">
+    </div>
+
+    <div class="form-group">
+        <h3>Elevasi Tanah</h3>
+        <label for="existing">Elevasi Tanah Asli / Existing (m):</label>
+        <input id="existing" type="number" placeholder="Contoh: 2.5 atau -1.5" step="any">
+    </div>
+
+    <br>
+    <button onclick="hitungCutFill()">Hitung Volume</button>
+
+    <h3>Hasil Perhitungan</h3>
+    <div id="hasil">
+        <p>Volume Galian (Cut): <span id="volCut">0</span> m³</p>
+        <p>Volume Timbunan (Fill): <span id="volFill">0</span> m³</p>
+        <p>Status Proyek: <span id="statusProyek">-</span></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
