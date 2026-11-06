@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cut and Fill Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Cut and Fill Calculator</h1>
+    <h3>Data Proyek</h3>
+
+    <input id="namaProyek" placeholder="Nama proyek">
+
+    <h3>Ukuran Grid</h3>
+    <input id="panjang" type="number" step="any"
+           placeholder="Panjang grid (m)">
+    <input id="lebar" type="number" step="any"
+           placeholder="Lebar grid (m)">
+
+    <h3>Elevasi Tanah Rencana</h3>
+    <input id="design" type="number" step="any"
+           placeholder="Elevasi rencana (m)">
+
+    <h3>Elevasi Tanah Asli (Existing)</h3>
+
+    <label>Titik A</label>
+    <input id="A" type="number" step="any" placeholder="Elevasi A">
+
+    <label>Titik B</label>
+    <input id="B" type="number" step="any" placeholder="Elevasi B">
+
+    <label>Titik C</label>
+    <input id="C" type="number" step="any" placeholder="Elevasi C">
+
+    <label>Titik D</label>
+    <input id="D" type="number" step="any" placeholder="Elevasi D">
+
+    <button onclick="hitung()">Hitung Cut and Fill</button>
+
+    <div id="hasil"></div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
